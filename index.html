@@ -1,1 +1,51 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>OmniVesta OS | Secure Login</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-auth-compat.js"></script>
+</head>
+<body style="background: var(--primary); display: flex; align-items: center; justify-content: center; height: 100vh;">
+
+    <div class="glass-card" style="width: 85%; max-width: 400px; border-left: none; text-align: center;">
+        <img src="https://lifeweaverlifeweaver-hash.github.io/smart-fermata-app/logo.png" style="width: 100px; border-radius: 50%; margin-bottom: 20px;">
+        <h2 style="color: var(--primary); margin: 0;">OmniVesta OS</h2>
+        <p style="color: #666; font-size: 14px; margin-bottom: 25px;">Enterprise Business Solutions</p>
+        
+        <input type="email" id="email" placeholder="Служебен имейл">
+        <input type="password" id="pass" placeholder="Парола">
+        
+        <button class="btn-core" onclick="login()">ВЛИЗАНЕ</button>
+        <p id="error" style="color: var(--red); font-size: 13px; margin-top: 15px; display: none;"></p>
+    </div>
+
+    <script>
+        // Твоята Firebase конфигурация
+        const firebaseConfig = {
+            apiKey: "AIzaSyBrZworxGoCtk4ul0jBGcjsCDlDh7T-xQU",
+            authDomain: "smartfermata.firebaseapp.com",
+            projectId: "smartfermata"
+        };
+        firebase.initializeApp(firebaseConfig);
+
+        function login() {
+            const e = document.getElementById('email').value;
+            const p = document.getElementById('pass').value;
+            const err = document.getElementById('error');
+
+            firebase.auth().signInWithEmailAndPassword(e, p)
+                .then(() => {
+                    window.location.href = 'app.html';
+                })
+                .catch(error => {
+                    err.innerText = "Грешка в оторизацията!";
+                    err.style.display = 'block';
+                });
+        }
+    </script>
+</body>
+  </html>
 
