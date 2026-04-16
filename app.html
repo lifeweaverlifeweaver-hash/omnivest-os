@@ -1,1 +1,95 @@
+ <!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>OmniVesta OS | Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-database-compat.js"></script>
+    <style>
+        .top-nav { background: var(--primary); color: white; padding: 15px; display: flex; align-items: center; position: sticky; top: 0; z-index: 100; }
+        .menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 15px; }
+        .menu-item { background: white; padding: 20px; border-radius: 20px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); cursor: pointer; border-bottom: 4px solid var(--accent); }
+        .menu-item i { font-size: 24px; color: var(--primary); margin-bottom: 10px; }
+        .content-area { padding: 15px; display: none; }
+        .active-view { display: block; }
+        .bottom-bar { position: fixed; bottom: 0; width: 100%; background: white; display: flex; border-top: 1px solid #eee; padding: 10px 0; }
+        .bar-item { flex: 1; text-align: center; font-size: 12px; color: #888; }
+        .bar-item.active { color: var(--primary); font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="top-nav">
+        <img src="https://lifeweaverlifeweaver-hash.github.io/smart-fermata-app/logo.png" style="width:35px; border-radius:50%; margin-right:10px; background:white;">
+        <b id="nav-title">OmniVesta OS</b>
+        <i class="fas fa-sign-out-alt" style="margin-left: auto;" onclick="logout()"></i>
+    </div>
+
+    <div id="main-menu" class="menu-grid active-view">
+        <div class="menu-item" onclick="showModule('reports')"><i class="fas fa-chart-line"></i><br>ОТЧЕТИ</div>
+        <div class="menu-item" onclick="showModule('hr')"><i class="fas fa-users-cog"></i><br>ПЕРСОНАЛ</div>
+        <div class="menu-item" onclick="showModule('booking')"><i class="fas fa-calendar-alt"></i><br>РЕЗЕРВАЦИИ</div>
+        <div class="menu-item" onclick="showModule('stock')"><i class="fas fa-warehouse"></i><br>СКЛАД</div>
+    </div>
+
+    <div id="module-reports" class="content-area">
+        <div class="glass-card">
+            <h3>📊 Финансов статус</h3>
+            <p>Дневен приход: <b id="daily-in">0.00</b> лв.</p>
+            <button class="btn-core" onclick="showModule('main-menu')">НАЗАД</button>
+        </div>
+    </div>
+
+    <div id="module-hr" class="content-area">
+        <div class="glass-card">
+            <h3>👥 График на персонала</h3>
+            <div id="hr-status-list">Зареждане...</div>
+            <button class="btn-core" onclick="showModule('main-menu')" style="margin-top:15px;">НАЗАД</button>
+        </div>
+    </div>
+
+    <div id="module-booking" class="content-area">
+        <div class="glass-card">
+            <h3>🐎 Нова резервация</h3>
+            <div id="horse-list"></div>
+            <button class="btn-core" onclick="showModule('main-menu')">НАЗАД</button>
+        </div>
+    </div>
+
+    <div id="module-stock" class="content-area">
+        <div class="glass-card">
+            <h3>📦 Наличност в склада</h3>
+            <p id="hay-stock">Сено: ...</p>
+            <button class="btn-core" onclick="showModule('main-menu')">НАЗАД</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Проверка на сесията - АКО НЕ Е ЛОГНАТ, ВРЪЩА В INDEX
+        firebase.auth().onAuthStateChanged(user => {
+            if (!user) window.location.href = 'index.html';
+        });
+
+        function logout() { firebase.auth().signOut(); }
+
+        function showModule(modId) {
+            // Скриваме всичко
+            document.querySelectorAll('.content-area, .menu-grid').forEach(el => el.classList.remove('active-view'));
+            // Показваме избраното
+            if(modId === 'main-menu') {
+                document.getElementById('main-menu').classList.add('active-view');
+                document.getElementById('nav-title').innerText = "OmniVesta OS";
+            } else {
+                document.getElementById('module-' + modId).classList.add('active-view');
+                document.getElementById('nav-title').innerText = modId.toUpperCase();
+            }
+        }
+    </script>
+</body>
+</html>
 
